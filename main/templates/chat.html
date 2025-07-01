@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Чат | Minecraft Server{% endblock %}
+{% block header %}Чат{% endblock %}
+{% block content %}
+<div class="chat-container">
+    <div id="chat-messages" class="chat-messages">
+        {% for m in messages %}
+            <div class="chat-msg"><b>{{ m.user.username }}</b> <span class="chat-time">{{ m.created_at|date:'H:i:s' }}</span>: {{ m.text|linebreaksbr }}</div>
+        {% endfor %}
+    </div>
+    <form id="chat-form" class="chat-form" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input type="text" id="chat-input" name="text" maxlength="500" placeholder="Введите сообщение..." required>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+<script>
+function scrollChatToBottom() {
+    var chat = document.getElementById('chat-messages');
+    chat.scrollTop = chat.scrollHeight;
+}
+function loadMessages() {
+    fetch('/chat/messages/')
+        .then(r => r.json())
+        .then(data => {
+            let html = '';
+            for (const m of data.messages) {
+                html += `<div class='chat-msg'><b>${m.user}</b> <span class='chat-time'>${m.created_at}</span>: ${m.text.replace(/\n/g, '<br>')}</div>`;
+            }
+            document.getElementById('chat-messages').innerHTML = html;
+            scrollChatToBottom();
+        });
+}
+document.getElementById('chat-form').onsubmit = function(e) {
+    e.preventDefault();
+    const input = document.getElementById('chat-input');
+    fetch('/chat/send/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'text=' + encodeURIComponent(input.value)
+    }).then(r => r.json()).then(data => {
+        if (data.success) {
+            input.value = '';
+            loadMessages();
+        }
+    });
+};
+setInterval(loadMessages, 3000);
+scrollChatToBottom();
+</script>
+<style>
+.chat-container { max-width: 600px; margin: 0 auto; }
+.chat-messages { background: #23272a; border-radius: 8px; padding: 16px; height: 350px; overflow-y: auto; margin-bottom: 12px; box-shadow: 0 2px 8px #0005; }
+.chat-msg { margin-bottom: 8px; }
+.chat-time { color: #7ec850; font-size: 0.9em; margin-right: 4px; }
+.chat-form { display: flex; gap: 8px; }
+.chat-form input[type=text] { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #444; background: #181a1b; color: #e0e0e0; }
+.chat-form button { padding: 8px 18px; background: #7ec850; color: #222; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+.chat-form button:hover { background: #5ea03a; }
+</style>
+{% endblock %} 
