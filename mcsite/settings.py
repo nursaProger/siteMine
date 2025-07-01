@@ -1,12 +1,18 @@
 import os
-SECRET_KEY = 'django-insecure-4v!$k7#1x@r8z!g1^b2w$e3q9p0l6s8d5f7g0h2j4k9m1n3b5v'
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-key')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['*']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR + '/db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 INSTALLED_APPS = [
     # ... existing code ...
     'django.contrib.admin',
@@ -17,7 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
 ]
+
 ROOT_URLCONF = 'mcsite.urls'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # должно быть до AuthenticationMiddleware
@@ -27,8 +35,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.82.234']
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -44,6 +51,7 @@ TEMPLATES = [
         },
     },
 ]
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main', 'static')]
