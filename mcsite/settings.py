@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
-    'main',
+    'main.apps.MainConfig',
 ]
 
 ROOT_URLCONF = 'mcsite.urls'
