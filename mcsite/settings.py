@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-4v!$k7#1x@r8z!g1^b2w$e3q9p0l6s8d5f7g0h2j4k9m1n3b5v'
 DEBUG = False
-ALLOWED_HOSTS = ['Asphaltt.pythonanywhere.com']
+ALLOWED_HOSTS = ['asphaltl.pythonanywhere.com']
 
 DATABASES = {
     'default': {
