@@ -290,25 +290,25 @@ def leaderboard(request):
             {
                 'name': 'Время игры',
                 'players': [
-                    {'rank': 1, 'name': 'Player1', 'value': '1,234 ч', 'level': 85},
-                    {'rank': 2, 'name': 'Player2', 'value': '987 ч', 'level': 72},
-                    {'rank': 3, 'name': 'Player3', 'value': '756 ч', 'level': 68},
+                    {'rank': 1, 'name': 'AquaHM', 'value': '2,000 ч', 'level': 99},
+                    {'rank': 2, 'name': 'Player1', 'value': '1,234 ч', 'level': 85},
+                    {'rank': 3, 'name': 'Player2', 'value': '987 ч', 'level': 72},
                 ]
             },
             {
                 'name': 'Блоки размещено',
                 'players': [
-                    {'rank': 1, 'name': 'Builder1', 'value': '2,345,678', 'level': 92},
-                    {'rank': 2, 'name': 'Builder2', 'value': '1,987,654', 'level': 78},
-                    {'rank': 3, 'name': 'Builder3', 'value': '1,567,890', 'level': 65},
+                    {'rank': 1, 'name': 'AquaHM', 'value': '3,000,000', 'level': 99},
+                    {'rank': 2, 'name': 'Builder1', 'value': '2,345,678', 'level': 92},
+                    {'rank': 3, 'name': 'Builder2', 'value': '1,987,654', 'level': 78},
                 ]
             },
             {
                 'name': 'Мобы убито',
                 'players': [
-                    {'rank': 1, 'name': 'Hunter1', 'value': '45,678', 'level': 88},
-                    {'rank': 2, 'name': 'Hunter2', 'value': '34,567', 'level': 75},
-                    {'rank': 3, 'name': 'Hunter3', 'value': '28,901', 'level': 62},
+                    {'rank': 1, 'name': 'AquaHM', 'value': '100,000', 'level': 99},
+                    {'rank': 2, 'name': 'Hunter1', 'value': '45,678', 'level': 88},
+                    {'rank': 3, 'name': 'Hunter2', 'value': '34,567', 'level': 75},
                 ]
             }
         ]
