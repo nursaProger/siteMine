@@ -1,15 +1,16 @@
 import os
+from pathlib import Path
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'unsafe-key')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = 'django-insecure-4v!$k7#1x@r8z!g1^b2w$e3q9p0l6s8d5f7g0h2j4k9m1n3b5v'
+DEBUG = False
+ALLOWED_HOSTS = ['Asphaltt.pythonanywhere.com']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -20,8 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
-    'main.apps.MainConfig',
+    'main',
 ]
 
 ROOT_URLCONF = 'mcsite.urls'
@@ -29,7 +29,7 @@ ROOT_URLCONF = 'mcsite.urls'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # должно быть до AuthenticationMiddleware
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,4 +56,17 @@ TEMPLATES = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main', 'static')]
+
+WSGI_APPLICATION = 'mcsite.wsgi.application'
+
+AUTH_PASSWORD_VALIDATORS = [
+    # ...
+]
+
+LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Asia/Almaty'
+USE_I18N = True
+USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ... existing code ... 

@@ -1,10 +1,144 @@
 {% extends 'base.html' %}
+
 {% block title %}Регистрация | Minecraft Server{% endblock %}
-{% block header %}Регистрация{% endblock %}
+
 {% block content %}
-<form method="post" class="auth-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Зарегистрироваться</button>
-</form>
+<div class="container">
+    <div class="auth-page">
+        <div class="form-container">
+            <h2 class="auth-title">Регистрация</h2>
+            <p class="auth-subtitle">Создайте аккаунт для доступа к серверу</p>
+            
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Имя пользователя</label>
+                    <input type="text" name="username" id="id_username" required>
+                    {% if form.username.errors %}
+                    <div class="field-error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <input type="email" name="email" id="id_email" required>
+                    {% if form.email.errors %}
+                    <div class="field-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password1">Пароль</label>
+                    <input type="password" name="password1" id="id_password1" required>
+                    {% if form.password1.errors %}
+                    <div class="field-error">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_password2">Подтвердите пароль</label>
+                    <input type="password" name="password2" id="id_password2" required>
+                    {% if form.password2.errors %}
+                    <div class="field-error">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </form>
+            
+            <div class="auth-links">
+                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.auth-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--gray);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+.auth-form {
+    margin-bottom: 30px;
+}
+
+.field-error {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 5px;
+    padding: 8px 12px;
+    background: rgba(255, 68, 68, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid var(--danger);
+}
+
+.error-message {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid var(--danger);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.error-message p {
+    color: var(--danger);
+    margin: 0;
+    font-weight: 500;
+}
+
+.auth-links {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-links p {
+    color: var(--gray);
+    margin: 0;
+}
+
+.auth-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.auth-links a:hover {
+    color: var(--accent);
+}
+</style>
 {% endblock %} 
