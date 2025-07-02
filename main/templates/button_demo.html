@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Демо кнопок - Minecraft Server{% endblock %}
+
+{% block header %}Демо современных кнопок{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">Выберите стиль кнопки</div>
+    <div class="card">
+        <h2>1. Неоновая кнопка</h2>
+        <button class="btn-neon">Неоновая кнопка</button>
+    </div>
+    <div class="card">
+        <h2>2. Градиентная кнопка</h2>
+        <button class="btn-gradient">Градиентная кнопка</button>
+    </div>
+    <div class="card">
+        <h2>3. Стеклянная (Glassmorphism)</h2>
+        <button class="btn-glass">Стеклянная кнопка</button>
+    </div>
+    <div class="card">
+        <h2>4. Пиксельная (Minecraft-стиль)</h2>
+        <button class="btn-pixel">Пиксельная кнопка</button>
+    </div>
+    <div class="card">
+        <h2>5. Минималистичная с анимацией границы</h2>
+        <button class="btn-minimal">Минималистичная кнопка</button>
+    </div>
+</div>
+
+<style>
+.btn-neon {
+  background: #0ff;
+  color: #111;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #0ff, 0 0 40px #0ff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: box-shadow 0.3s, background 0.3s;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+}
+.btn-neon:hover {
+  background: #00f6ff;
+  box-shadow: 0 0 20px #0ff, 0 0 60px #0ff;
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #00d4ff, #ff006e);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.3s, transform 0.2s;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+}
+.btn-gradient:hover {
+  background: linear-gradient(90deg, #ff006e, #00d4ff);
+  transform: translateY(-3px) scale(1.05);
+}
+
+.btn-glass {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border: 1.5px solid #00d4ff;
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 24px rgba(0,212,255,0.15);
+  transition: background 0.3s, border 0.3s;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+}
+.btn-glass:hover {
+  background: rgba(0,212,255,0.15);
+  border: 1.5px solid #ff006e;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+.btn-pixel {
+  background: #222;
+  color: #ffd700;
+  border: 3px solid #00d4ff;
+  border-radius: 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  padding: 12px 28px;
+  box-shadow: 4px 4px 0 #00d4ff, 8px 8px 0 #ff006e;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+.btn-pixel:hover {
+  background: #00d4ff;
+  color: #222;
+  box-shadow: 2px 2px 0 #ff006e, 4px 4px 0 #ffd700;
+}
+
+.btn-minimal {
+  background: transparent;
+  color: #00d4ff;
+  border: 2px solid #00d4ff;
+  border-radius: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s, border-color 0.3s;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+}
+.btn-minimal::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: #00d4ff;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+.btn-minimal:hover {
+  color: #fff;
+  border-color: #ff006e;
+}
+.btn-minimal:hover::after {
+  opacity: 0.2;
+}
+</style>
+{% endblock %} 

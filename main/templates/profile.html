@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль - Minecraft Server{% endblock %}
+
+{% block header %}Профиль игрока{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">Профиль {{ profile.user.username }}</div>
+    
+    <div class="profile-layout">
+        <!-- Основная информация -->
+        <div class="profile-main">
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <div class="avatar-placeholder">{{ profile.user.username|first|upper }}</div>
+                    </div>
+                    <div class="profile-info">
+                        <h2>{{ profile.user.username }}</h2>
+                        <p class="join-date">На сервере с {{ profile.stats.join_date }}</p>
+                        <div class="profile-level">
+                            <span class="level-badge">Уровень {{ profile.stats.achievements }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Статистика -->
+            <div class="card">
+                <h3 class="section-title">Статистика</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-info">
+                            <h4>Время игры</h4>
+                            <span class="stat-value">{{ profile.stats.total_playtime }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🧱</div>
+                        <div class="stat-info">
+                            <h4>Блоков размещено</h4>
+                            <span class="stat-value">{{ profile.stats.blocks_placed }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">⚔️</div>
+                        <div class="stat-info">
+                            <h4>Мобов убито</h4>
+                            <span class="stat-value">{{ profile.stats.mobs_killed }}</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">💀</div>
+                        <div class="stat-info">
+                            <h4>Смертей</h4>
+                            <span class="stat-value">{{ profile.stats.deaths }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Достижения -->
+        <div class="profile-sidebar">
+            <div class="card">
+                <h3 class="section-title">Достижения</h3>
+                <div class="achievements-list">
+                    {% for achievement in profile.achievements %}
+                    <div class="achievement-item {% if achievement.earned %}earned{% else %}locked{% endif %}">
+                        <div class="achievement-icon">
+                            {% if achievement.earned %}🏆{% else %}🔒{% endif %}
+                        </div>
+                        <div class="achievement-info">
+                            <h4>{{ achievement.name }}</h4>
+                            <p>{{ achievement.description }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Последняя активность -->
+            <div class="card">
+                <h3 class="section-title">Последняя активность</h3>
+                <div class="activity-list">
+                    {% for activity in profile.recent_activity %}
+                    <div class="activity-item">
+                        <div class="activity-icon">📊</div>
+                        <div class="activity-info">
+                            <p>{{ activity.action }}</p>
+                            <span class="activity-time">{{ activity.time }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Настройки профиля -->
+    <div class="card">
+        <h3 class="section-title">Настройки профиля</h3>
+        <div class="settings-form">
+            <div class="form-group">
+                <label for="nickname">Никнейм:</label>
+                <input type="text" id="nickname" value="{{ profile.user.username }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="{{ profile.user.email|default:'' }}">
+            </div>
+            <div class="form-group">
+                <label for="bio">О себе:</label>
+                <textarea id="bio" rows="4" placeholder="Расскажите о себе..."></textarea>
+            </div>
+            <button class="btn" onclick="saveSettings()">Сохранить настройки</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.profile-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.section-title {
+    color: var(--primary);
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0;
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+}
+
+.avatar-placeholder {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--light);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+}
+
+.profile-info h2 {
+    color: var(--light);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.join-date {
+    color: var(--gray);
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.level-badge {
+    background: linear-gradient(45deg, var(--accent), var(--secondary));
+    color: var(--light);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: var(--glass);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.2);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+}
+
+.stat-info h4 {
+    color: var(--primary);
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.stat-value {
+    color: var(--light);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: var(--glass);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.achievement-item.earned {
+    border-color: var(--success);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.achievement-item.locked {
+    opacity: 0.6;
+    border-color: var(--gray);
+}
+
+.achievement-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+.achievement-info h4 {
+    color: var(--light);
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.achievement-info p {
+    color: var(--gray);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: var(--glass);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.activity-item:hover {
+    transform: translateX(5px);
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.2);
+}
+
+.activity-icon {
+    font-size: 1.2rem;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+}
+
+.activity-info p {
+    color: var(--light);
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.activity-time {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+.settings-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.settings-form textarea {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--light);
+    font-size: 1rem;
+    font-family: 'Rajdhani', sans-serif;
+    resize: vertical;
+}
+
+.settings-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+function saveSettings() {
+    const nickname = document.getElementById('nickname').value;
+    const email = document.getElementById('email').value;
+    const bio = document.getElementById('bio').value;
+    
+    if (!nickname) {
+        alert('Пожалуйста, введите никнейм');
+        return;
+    }
+    
+    // Здесь будет логика сохранения настроек
+    alert('Настройки сохранены!');
+}
+</script>
+{% endblock %} 

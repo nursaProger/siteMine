@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Статистика сервера{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="stats-page">
+        <h1 class="page-title">Статистика сервера</h1>
+        
+        <div class="stats-overview">
+            <div class="overview-card">
+                <div class="overview-icon">👥</div>
+                <div class="overview-info">
+                    <h3>Всего игроков</h3>
+                    <p class="overview-value">{{ stats.total_players }}</p>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon">🟢</div>
+                <div class="overview-info">
+                    <h3>Онлайн сейчас</h3>
+                    <p class="overview-value">{{ stats.online_now }}</p>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon">📈</div>
+                <div class="overview-info">
+                    <h3>Пик сегодня</h3>
+                    <p class="overview-value">{{ stats.peak_today }}</p>
+                </div>
+            </div>
+            <div class="overview-card">
+                <div class="overview-icon">⏱️</div>
+                <div class="overview-info">
+                    <h3>Общее время игры</h3>
+                    <p class="overview-value">{{ stats.total_playtime }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-sections">
+            <div class="stats-section">
+                <h2>Топ игроков</h2>
+                <div class="top-players">
+                    {% for player in stats.top_players %}
+                    <div class="player-card">
+                        <div class="player-rank">#{{ forloop.counter }}</div>
+                        <div class="player-info">
+                            <h4>{{ player.name }}</h4>
+                            <div class="player-stats">
+                                <span class="stat">Время игры: {{ player.playtime }}</span>
+                                <span class="stat">Уровень: {{ player.level }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h2>Статистика сервера</h2>
+                <div class="server-stats-grid">
+                    <div class="server-stat-card">
+                        <div class="stat-icon">🧱</div>
+                        <div class="stat-info">
+                            <h4>Блоков размещено</h4>
+                            <p class="stat-value">{{ stats.server_stats.total_blocks_placed }}</p>
+                        </div>
+                    </div>
+                    <div class="server-stat-card">
+                        <div class="stat-icon">⚔️</div>
+                        <div class="stat-info">
+                            <h4>Мобов убито</h4>
+                            <p class="stat-value">{{ stats.server_stats.total_mobs_killed }}</p>
+                        </div>
+                    </div>
+                    <div class="server-stat-card">
+                        <div class="stat-icon">💀</div>
+                        <div class="stat-info">
+                            <h4>Смертей</h4>
+                            <p class="stat-value">{{ stats.server_stats.total_deaths }}</p>
+                        </div>
+                    </div>
+                    <div class="server-stat-card">
+                        <div class="stat-icon">🔨</div>
+                        <div class="stat-info">
+                            <h4>Предметов создано</h4>
+                            <p class="stat-value">{{ stats.server_stats.total_items_crafted }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-charts">
+            <div class="chart-section">
+                <h3>Активность игроков (последние 24 часа)</h3>
+                <div class="activity-chart">
+                    <div class="chart-placeholder">
+                        <p>График активности будет отображаться здесь</p>
+                        <div class="chart-bars">
+                            {% for i in "123456789012345678901234" %}
+                            <div class="chart-bar" style="height: {{ forloop.counter|random:100 }}%"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

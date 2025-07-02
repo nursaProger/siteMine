@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+
+{% block title %}Топ игроков - Minecraft Server{% endblock %}
+
+{% block header %}Таблица лидеров{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-title">Топ игроков</div>
+    
+    {% for category in leaderboard.categories %}
+    <div class="card">
+        <h2 class="category-title">{{ category.name }}</h2>
+        <div class="leaderboard-table">
+            {% for player in category.players %}
+            <div class="leaderboard-row {% if player.rank == 1 %}gold{% elif player.rank == 2 %}silver{% elif player.rank == 3 %}bronze{% endif %}">
+                <div class="rank-badge">
+                    {% if player.rank == 1 %}🥇{% elif player.rank == 2 %}🥈{% elif player.rank == 3 %}🥉{% else %}#{{ player.rank }}{% endif %}
+                </div>
+                <div class="player-info">
+                    <h3>{{ player.name }}</h3>
+                    <span class="player-level">Уровень {{ player.level }}</span>
+                </div>
+                <div class="player-value">
+                    <span class="value-text">{{ player.value }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    
+    <!-- Фильтры и поиск -->
+    <div class="card">
+        <h3 class="section-title">Поиск игрока</h3>
+        <div class="search-section">
+            <div class="search-form">
+                <div class="form-group">
+                    <label for="player-search">Имя игрока:</label>
+                    <input type="text" id="player-search" placeholder="Введите имя игрока...">
+                </div>
+                <button class="btn" onclick="searchPlayer()">Найти</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Статистика лидеров -->
+    <div class="card">
+        <h3 class="section-title">Статистика лидеров</h3>
+        <div class="leaderboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon">👑</div>
+                <div class="stat-info">
+                    <h4>Лучший игрок</h4>
+                    <span class="stat-value">Player1</span>
+                    <p>1,234 часа игры</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏗️</div>
+                <div class="stat-info">
+                    <h4>Лучший строитель</h4>
+                    <span class="stat-value">Builder1</span>
+                    <p>2,345,678 блоков</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚔️</div>
+                <div class="stat-info">
+                    <h4>Лучший охотник</h4>
+                    <span class="stat-value">Hunter1</span>
+                    <p>45,678 мобов</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.category-title {
+    color: var(--primary);
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.leaderboard-table {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--glass);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.leaderboard-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.leaderboard-row:hover::before {
+    opacity: 1;
+}
+
+.leaderboard-row:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 25px rgba(0, 212, 255, 0.2);
+}
+
+.leaderboard-row.gold {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+    border-color: var(--accent);
+}
+
+.leaderboard-row.silver {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.05));
+    border-color: #c0c0c0;
+}
+
+.leaderboard-row.bronze {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.1), rgba(205, 127, 50, 0.05));
+    border-color: #cd7f32;
+}
+
+.rank-badge {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    color: var(--light);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.leaderboard-row.gold .rank-badge {
+    background: linear-gradient(45deg, var(--accent), #ffaa00);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-row.silver .rank-badge {
+    background: linear-gradient(45deg, #c0c0c0, #a0a0a0);
+    box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-row.bronze .rank-badge {
+    background: linear-gradient(45deg, #cd7f32, #b8860b);
+    box-shadow: 0 5px 15px rgba(205, 127, 50, 0.3);
+}
+
+.player-info {
+    flex: 1;
+}
+
+.player-info h3 {
+    color: var(--light);
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.player-level {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.player-value {
+    text-align: right;
+}
+
+.value-text {
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.section-title {
+    color: var(--primary);
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.search-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.search-form {
+    display: flex;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+    align-items: end;
+}
+
+.search-form .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.search-form .btn {
+    flex-shrink: 0;
+}
+
+.leaderboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    background: var(--glass);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 30px rgba(0, 212, 255, 0.2);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.5));
+}
+
+.stat-info h4 {
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.stat-value {
+    color: var(--light);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.stat-info p {
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .leaderboard-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .leaderboard-row {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .player-value {
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+function searchPlayer() {
+    const playerName = document.getElementById('player-search').value.trim();
+    
+    if (!playerName) {
+        alert('Пожалуйста, введите имя игрока');
+        return;
+    }
+    
+    // Здесь будет логика поиска игрока
+    alert(`Поиск игрока "${playerName}" будет добавлен позже!`);
+}
+
+// Анимация появления строк таблицы
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.leaderboard-row');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(-20px)';
+        row.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        
+        setTimeout(() => {
+            row.style.opacity = '1';
+            row.style.transform = 'translateX(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %} 

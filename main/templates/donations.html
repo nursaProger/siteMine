@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Донаты{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="donations-page">
+        <h1 class="page-title">Поддержать сервер</h1>
+        <p class="donations-intro">Поддержите развитие сервера и получите эксклюзивные привилегии!</p>
+        
+        <div class="donation-packages">
+            {% for package in packages %}
+            <div class="package-card">
+                <div class="package-header">
+                    <h3 class="package-name">{{ package.name }}</h3>
+                    <div class="package-price">
+                        <span class="price-amount">{{ package.price }}</span>
+                        <span class="price-currency">{{ package.currency }}</span>
+                    </div>
+                </div>
+                <div class="package-features">
+                    <ul>
+                        {% for feature in package.features %}
+                        <li>{{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="package-action">
+                    <button class="donate-btn" onclick="donate('{{ package.name }}', {{ package.price }})">
+                        Купить {{ package.name }}
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="donation-info">
+            <h3>Как работает система донатов?</h3>
+            <div class="info-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Выберите пакет</h4>
+                        <p>Выберите подходящий вам пакет привилегий</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Оплатите</h4>
+                        <p>Выполните оплату любым удобным способом</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Получите привилегии</h4>
+                        <p>Привилегии будут активированы автоматически</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-methods">
+            <h3>Способы оплаты</h3>
+            <div class="payment-grid">
+                <div class="payment-method">
+                    <div class="payment-icon">💳</div>
+                    <span>Банковская карта</span>
+                </div>
+                <div class="payment-method">
+                    <div class="payment-icon">📱</div>
+                    <span>Мобильные платежи</span>
+                </div>
+                <div class="payment-method">
+                    <div class="payment-icon">🏦</div>
+                    <span>Банковский перевод</span>
+                </div>
+                <div class="payment-method">
+                    <div class="payment-icon">💎</div>
+                    <span>Криптовалюта</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="donation-faq">
+            <h3>Часто задаваемые вопросы</h3>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4>Как долго действуют привилегии?</h4>
+                    <p>Привилегии действуют навсегда и не имеют срока действия.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Можно ли передать привилегии другому игроку?</h4>
+                    <p>Нет, привилегии привязаны к вашему аккаунту и не передаются.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Что если сервер закроется?</h4>
+                    <p>В случае закрытия сервера мы вернем средства всем донатерам.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function donate(packageName, price) {
+    alert(`Функция оплаты для пакета ${packageName} (${price} ₸) будет добавлена позже.`);
+}
+</script>
+{% endblock %} 
